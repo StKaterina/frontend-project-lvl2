@@ -8,13 +8,14 @@
     "gendiff": "bin/gendiff.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx jest --watch",
+    "test-coverage": "npx jest --coverage"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/StKaterina/frontend-project-lvl2.git"
   },
-  "author": "",
+  "author": "Ekaterina Stepanova",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/StKaterina/frontend-project-lvl2/issues"
@@ -25,8 +26,12 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
+    "@jest/globals": "^27.4.4",
     "eslint": "^8.4.1",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.3"
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jest": "^25.3.0",
+    "jest": "^27.4.4",
+    "jest-cli": "^27.4.5"
   }
 }

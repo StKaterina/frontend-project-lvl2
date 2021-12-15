@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import fileComparisonJSON from './fileComparisonJSON.js';
+import fileComparisonJSON from './comparisonJSON.js';
 
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

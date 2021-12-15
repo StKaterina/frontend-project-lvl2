@@ -2,6 +2,7 @@
 
 [![Actions Status](https://github.com/StKaterina/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/StKaterina/frontend-project-lvl2/actions)
 <a href="https://codeclimate.com/github/StKaterina/frontend-project-lvl2"><img src="https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability" /></a>
+<a href="https://codeclimate.com/github/StKaterina/frontend-project-lvl2/test_coverage"><img src="https://api.codeclimate.com/v1/badges/3d443cc6d14e46e11ba5/test_coverage" /></a>
 
 <h1>Вычислитель отличий</h1>
 <h2>Installation:</h2>
