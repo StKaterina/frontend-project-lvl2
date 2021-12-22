@@ -8,8 +8,8 @@ const bracketIdent = (depth) => replacer.repeat(identSize(depth) - 1);
 const parseStatus = {
   hasChildren: '  ',
   added: '+ ',
-  deleted: '- ',
-  unchanged: '  ',
+  removed: '- ',
+  notUpdated: '  ',
 };
 
 const stringify = (depth, status, name, value) => {
@@ -17,7 +17,7 @@ const stringify = (depth, status, name, value) => {
     if (!_.isPlainObject(node)) return node;
     const lineRes = Object
       .entries(node)
-      .map(([key, val]) => `${currentIdent(d)}${parseStatus.unchanged}${key}: ${iter(val, d + 2)}`);
+      .map(([key, val]) => `${currentIdent(d)}${parseStatus.notUpdated}${key}: ${iter(val, d + 2)}`);
     return [
       '{',
       ...lineRes,
@@ -34,11 +34,11 @@ export default (diffTree) => {
       switch (status) {
         case 'hasChildren':
           return stringify(depth, status, name, iter(node.children, depth + 2));
-        case 'changed':
-          return `${stringify(depth, 'deleted', name, node.valueDel)}\n${stringify(depth, 'added', name, node.valueAdd)}`;
+        case 'updated':
+          return `${stringify(depth, 'removed', name, node.valueDel)}\n${stringify(depth, 'added', name, node.valueAdd)}`;
         case 'added':
-        case 'deleted':
-        case 'unchanged':
+        case 'removed':
+        case 'notUpdated':
           return stringify(depth, status, name, value);
         default:
           throw new Error('Status not found');
