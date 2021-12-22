@@ -1,30 +1,22 @@
-import _ from 'lodash';
+import yaml from 'js-yaml';
+import stylish from './formatters/stylish.js';
 
-export default (obj1, obj2) => {
-  console.log(obj1);
-  console.log(obj2);
-  const joinKeys = _.sortBy(_.union(_.keys(obj1), _.keys(obj2)));
-  const diff = joinKeys.reduce((acc, key) => {
-    if (!_.has(obj1, key)) {
-      acc[`+ ${key}`] = obj2[key];
-    } else if (!_.has(obj2, key)) {
-      acc[`- ${key}`] = obj1[key];
-    } else if (obj1[key] !== obj2[key]) {
-      acc[`- ${key}`] = obj1[key];
-      acc[`+ ${key}`] = obj2[key];
-    } else {
-      acc[`  ${key}`] = obj1[key];
-    }
-    return acc;
-  }, []);
+const parsFunction = {
+  json: JSON.parse,
+  yml: yaml.load,
+  yaml: yaml.load,
+};
 
-  const formattDiff = Object
-    .entries(diff)
-    .map(([key, value]) => `  ${key}: ${value}`);
+export const parserTypeFile = (dataFile, typeFile) => {
+  const funcParsers = parsFunction[typeFile];
+  return funcParsers(dataFile);
+};
 
-  return [
-    '{',
-    ...formattDiff,
-    '}',
-  ].join('\n');
+const parsFormatter = {
+  stylish,
+};
+
+export const parserStylish = (diffTree, formatter) => {
+  const funcFormatter = parsFormatter[formatter];
+  return funcFormatter(diffTree);
 };
