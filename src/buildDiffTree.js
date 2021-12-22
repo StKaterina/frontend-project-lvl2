@@ -16,14 +16,14 @@ export default (obj1, obj2) => {
         return { status: 'added', name: key, value: node2[key] };
       }
       if (!_.has(node2, key)) {
-        return { status: 'deleted', name: key, value: node1[key] };
+        return { status: 'removed', name: key, value: node1[key] };
       }
       if (node1[key] !== node2[key]) {
         return {
-          status: 'changed', name: key, valueDel: node1[key], valueAdd: node2[key],
+          status: 'updated', name: key, valueDel: node1[key], valueAdd: node2[key],
         };
       }
-      return { status: 'unchanged', name: key, value: node1[key] };
+      return { status: 'notUpdated', name: key, value: node1[key] };
     });
     return diffTree;
   };
