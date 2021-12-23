@@ -12,15 +12,15 @@ const getFixturePath = (fileName) => path.join(__dirname, '..', '__fixtures__', 
 const readFile = (filePath) => fs.readFileSync(getFixturePath(filePath), 'utf-8');
 
 const valuesForTests = [
-  { a: 'file1.json', b: 'file2.json', format: 'stylish', expected: 'nestedExpected.txt' },
-  { a: 'file1.yml', b: 'file2.yml', format: 'stylish', expected: 'nestedExpected.txt' },
+  { a: 'file1.json', b: 'file2.json', expected: 'nestedExpected.txt' },
+  { a: 'file1.yml', b: 'file2.yml', expected: 'nestedExpected.txt' },
   { a: 'file1.json', b: 'file2.json', format: 'plain', expected: 'plainExpected.txt' },
   { a: 'file1.json', b: 'file2.json', format: 'json', expected: 'jsonExpected.txt' },
 ];
 
 test.each(valuesForTests)(
   'Comparing $a and $b --format $format',
-  ({ a, b, format, expected }) => {
+  ({ a, b, format = 'stylish', expected }) => {
     const fileExpected = readFile(expected);
     expect(genDiff(a, b, format)).toEqual(fileExpected);
   },
