@@ -24,3 +24,8 @@ test.each(valuesForTests)(
     expect(genDiff(a, b)).toEqual(fileExpected);
   },
 );
+
+test('Comparing file3.json and file4.json --format plain', () => {
+  const fileExpected = readFile('plainExpected.txt');
+  expect(genDiff('file3.json', 'file4.json', 'plain')).toEqual(fileExpected);
+});

@@ -2,7 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import { cwd } from 'process';
 import { fileURLToPath } from 'url';
-import { parserTypeFile, parserStylish } from './parsers.js';
+import parserTypeFile from './parsers.js';
+import parserStylish from './formatters/index.js';
 import buildDiffTree from './buildDiffTree.js';
 
 // eslint-disable-next-line no-underscore-dangle
@@ -21,6 +22,7 @@ const readFile = (filePath) => {
 };
 
 export default (file1, file2, format = 'stylish') => {
+  console.log(format);
   const objFile1 = readFile(file1);
   const objFile2 = readFile(file2);
   const diffTree = buildDiffTree(objFile1, objFile2);
