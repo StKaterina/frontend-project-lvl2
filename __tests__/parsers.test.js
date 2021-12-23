@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 import { test, expect } from '@jest/globals';
 import fs from 'fs';
 import path from 'path';
@@ -11,26 +12,16 @@ const getFixturePath = (fileName) => path.join(__dirname, '..', '__fixtures__', 
 const readFile = (filePath) => fs.readFileSync(getFixturePath(filePath), 'utf-8');
 
 const valuesForTests = [
-  { a: 'file1.json', b: 'file2.json', expected: 'plainJsonExpected.txt' },
-  { a: 'file1.yml', b: 'file2.yml', expected: 'plainYmlExpected.txt' },
-  { a: 'file3.json', b: 'file4.json', expected: 'nestedExpected.txt' },
-  { a: 'file3.yml', b: 'file4.yml', expected: 'nestedExpected.txt' },
+  { a: 'file1.json', b: 'file2.json', format: 'stylish', expected: 'nestedExpected.txt' },
+  { a: 'file1.yml', b: 'file2.yml', format: 'stylish', expected: 'nestedExpected.txt' },
+  { a: 'file1.json', b: 'file2.json', format: 'plain', expected: 'plainExpected.txt' },
+  { a: 'file1.json', b: 'file2.json', format: 'json', expected: 'jsonExpected.txt' },
 ];
 
 test.each(valuesForTests)(
-  'Comparing $a and $b',
-  ({ a, b, expected }) => {
+  'Comparing $a and $b --format $format',
+  ({ a, b, format, expected }) => {
     const fileExpected = readFile(expected);
-    expect(genDiff(a, b)).toEqual(fileExpected);
+    expect(genDiff(a, b, format)).toEqual(fileExpected);
   },
 );
-
-test('Comparing file3.json and file4.json --format plain', () => {
-  const fileExpected = readFile('plainExpected.txt');
-  expect(genDiff('file3.json', 'file4.json', 'plain')).toEqual(fileExpected);
-});
-
-test('Comparing file3.json and file4.json --format json', () => {
-  const fileExpected = readFile('jsonExpected.txt');
-  expect(genDiff('file3.json', 'file4.json', 'json')).toEqual(fileExpected);
-});
