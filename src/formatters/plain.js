@@ -12,18 +12,19 @@ export default (diffTree) => {
     // eslint-disable-next-line object-curly-newline
     const resultLines = tree
       .filter(({ status }) => status !== 'notUpdated')
-      .map(({ status, name, ...node }) => {
+      // eslint-disable-next-line object-curly-newline
+      .map(({ status, name, value, children, valueDel, valueAdd }) => {
         const pathProperty = [...path, name];
         const correctPath = pathProperty.join('.');
         switch (status) {
           case 'hasChildren':
-            return `${iter(node.children, pathProperty)}`;
+            return `${iter(children, pathProperty)}`;
           case 'added':
-            return `Property '${correctPath}' was ${status} with value: ${stringify(node.value)}`;
+            return `Property '${correctPath}' was ${status} with value: ${stringify(value)}`;
           case 'removed':
             return `Property '${correctPath}' was ${status}`;
           case 'updated':
-            return `Property '${correctPath}' was ${status}. From ${stringify(node.valueDel)} to ${stringify(node.valueAdd)}`;
+            return `Property '${correctPath}' was ${status}. From ${stringify(valueDel)} to ${stringify(valueAdd)}`;
           default:
             throw new Error('Status not found');
         }

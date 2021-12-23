@@ -30,12 +30,12 @@ const stringify = (depth, status, name, value) => {
 export default (diffTree) => {
   const iter = (tree, depth) => {
     // eslint-disable-next-line object-curly-newline
-    const resultLines = tree.map(({ status, value, name, ...node }) => {
+    const resultLines = tree.map(({ status, value, name, children, valueDel, valueAdd }) => {
       switch (status) {
         case 'hasChildren':
-          return stringify(depth, status, name, iter(node.children, depth + 2));
+          return stringify(depth, status, name, iter(children, depth + 2));
         case 'updated':
-          return `${stringify(depth, 'removed', name, node.valueDel)}\n${stringify(depth, 'added', name, node.valueAdd)}`;
+          return `${stringify(depth, 'removed', name, valueDel)}\n${stringify(depth, 'added', name, valueAdd)}`;
         case 'added':
         case 'removed':
         case 'notUpdated':
