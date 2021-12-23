@@ -128,3 +128,6 @@ host: "hexlet.io"
 
 <h4>Flat format:</h4>
 <p><a href="https://asciinema.org/a/r6uzJiYiZLY3OVLeHU22arGCX" target="_blank"><img src="https://asciinema.org/a/r6uzJiYiZLY3OVLeHU22arGCX.svg" /></a></p>
+
+<h4>Json format:</h4>
+<p><a href="https://asciinema.org/a/PX6p4attvG8EylUnQuI5raf9q" target="_blank"><img src="https://asciinema.org/a/PX6p4attvG8EylUnQuI5raf9q.svg" /></a></p>
