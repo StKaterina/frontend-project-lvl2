@@ -29,3 +29,8 @@ test('Comparing file3.json and file4.json --format plain', () => {
   const fileExpected = readFile('plainExpected.txt');
   expect(genDiff('file3.json', 'file4.json', 'plain')).toEqual(fileExpected);
 });
+
+test('Comparing file3.json and file4.json --format json', () => {
+  const fileExpected = readFile('jsonExpected.txt');
+  expect(genDiff('file3.json', 'file4.json', 'json')).toEqual(fileExpected);
+});

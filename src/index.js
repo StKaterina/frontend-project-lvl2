@@ -22,7 +22,6 @@ const readFile = (filePath) => {
 };
 
 export default (file1, file2, format = 'stylish') => {
-  console.log(format);
   const objFile1 = readFile(file1);
   const objFile2 = readFile(file2);
   const diffTree = buildDiffTree(objFile1, objFile2);
