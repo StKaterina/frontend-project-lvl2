@@ -11,25 +11,25 @@ export default (diffTree) => {
   const iter = (tree, path) => {
     // eslint-disable-next-line object-curly-newline
     const resultLines = tree
-      .filter(({ status }) => status !== 'notUpdated')
+      .filter(({ type }) => type !== 'notUpdated')
       // eslint-disable-next-line object-curly-newline
-      .map(({ status, name, value, children, valueDel, valueAdd }) => {
-        const pathProperty = [...path, name];
+      .map(({ type, ...node }) => {
+        const pathProperty = [...path, node.name];
         const correctPath = pathProperty.join('.');
-        switch (status) {
+        switch (type) {
           case 'hasChildren':
-            return `${iter(children, pathProperty)}`;
+            return `${iter(node.children, pathProperty)}`;
           case 'added':
-            return `Property '${correctPath}' was ${status} with value: ${stringify(value)}`;
+            return `Property '${correctPath}' was ${type} with value: ${stringify(node.value)}`;
           case 'removed':
-            return `Property '${correctPath}' was ${status}`;
+            return `Property '${correctPath}' was ${type}`;
           case 'updated':
-            return `Property '${correctPath}' was ${status}. From ${stringify(valueDel)} to ${stringify(valueAdd)}`;
+            return `Property '${correctPath}' was ${type}. From ${stringify(node.valueDel)} to ${stringify(node.valueAdd)}`;
           default:
-            throw new Error('Status not found');
+            throw new Error('Type not found');
         }
       });
     return resultLines.join('\n');
   };
-  return iter(diffTree, []);
+  return iter(diffTree.children, []);
 };

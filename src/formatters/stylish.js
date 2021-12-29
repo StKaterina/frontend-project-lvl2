@@ -1,54 +1,49 @@
 import _ from 'lodash';
 
 const replacer = '  ';
-const identSize = (depth) => depth;
-const currentIdent = (depth) => replacer.repeat(depth);
-const bracketIdent = (depth) => replacer.repeat(identSize(depth) - 1);
+const nextLevelIndent = (depth) => depth + 1;
+const currentIndent = (depth) => replacer.repeat(2 * depth - 1);
+const bracketIndent = (depth) => replacer.repeat(2 * depth);
 
-const parseStatus = {
+const parseType = {
   hasChildren: '  ',
   added: '+ ',
   removed: '- ',
   notUpdated: '  ',
 };
 
-const stringify = (depth, status, name, value) => {
-  const iter = (node, d) => {
-    if (!_.isPlainObject(node)) return node;
-    const lineRes = Object
-      .entries(node)
-      .map(([key, val]) => `${currentIdent(d)}${parseStatus.notUpdated}${key}: ${iter(val, d + 2)}`);
-    return [
-      '{',
-      ...lineRes,
-      `${bracketIdent(d)}}`,
-    ].join('\n');
-  };
-  return `${currentIdent(depth)}${parseStatus[status]}${name}: ${iter(value, depth + 2)}`;
+const stringify = (data, depth, parserStylish) => {
+  if (!_.isPlainObject(data)) return String(data);
+
+  const linesOfObject = Object
+    .entries(data)
+    .map(([name, value]) => parserStylish({ type: 'notUpdated', name, value }, nextLevelIndent(depth)));
+
+  return [
+    '{',
+    ...linesOfObject,
+    `${bracketIndent(depth)}}`,
+  ].join('\n');
 };
 
-export default (diffTree) => {
-  const iter = (tree, depth) => {
-    // eslint-disable-next-line object-curly-newline
-    const resultLines = tree.map(({ status, value, name, children, valueDel, valueAdd }) => {
-      switch (status) {
-        case 'hasChildren':
-          return stringify(depth, status, name, iter(children, depth + 2));
-        case 'updated':
-          return `${stringify(depth, 'removed', name, valueDel)}\n${stringify(depth, 'added', name, valueAdd)}`;
-        case 'added':
-        case 'removed':
-        case 'notUpdated':
-          return stringify(depth, status, name, value);
-        default:
-          throw new Error('Status not found');
-      }
-    });
-    return [
-      '{',
-      ...resultLines,
-      `${bracketIdent(depth)}}`,
-    ].join('\n');
-  };
-  return iter(diffTree, 1);
+const parserStylish = (diffTree, depth = 0) => {
+  const formattLine = (type, name, value) => `${currentIndent(depth)}${parseType[type]}${name}: ${stringify(value, depth, parserStylish)}`;
+
+  const { type, name, children } = diffTree;
+  if (children) {
+    const lineChildren = children.map((node) => parserStylish(node, nextLevelIndent(depth)));
+    if (type === 'hasChildren') {
+      return `${currentIndent(depth)}${parseType[type]}${name}: {\n${lineChildren.join('\n')}\n${bracketIndent(depth)}}`;
+    }
+    return `{\n${lineChildren.join('\n')}\n}`;
+  }
+
+  if (type === 'updated') {
+    const value1 = `${formattLine('removed', name, diffTree.valueDel)}`;
+    const value2 = `${formattLine('added', name, diffTree.valueAdd)}`;
+    return `${value1}\n${value2}`;
+  }
+  return formattLine(type, name, diffTree.value);
 };
+
+export default parserStylish;

@@ -1,17 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import { cwd } from 'process';
-import { fileURLToPath } from 'url';
 import parserTypeFile from './parsers.js';
 import parserStylish from './formatters/index.js';
 import buildDiffTree from './buildDiffTree.js';
 
-// eslint-disable-next-line no-underscore-dangle
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 const getParserNameFile = (filePath) => path.parse(filePath).base;
 const getParserTypeFile = (filePath) => path.extname(filePath).substring(1);
-const getREalPathFile = (filePath) => ((fs.existsSync(filePath)) ? path.resolve(cwd(), filePath) : path.join(__dirname, '..', '__fixtures__', getParserNameFile(filePath)));
+const getREalPathFile = (filePath) => path.resolve('__fixtures__', getParserNameFile(filePath));
 
 const readFile = (filePath) => {
   const realPath = getREalPathFile(filePath);
