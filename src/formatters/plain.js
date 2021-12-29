@@ -13,7 +13,8 @@ export default (diffTree) => {
     const resultLines = tree
       .filter(({ type }) => type !== 'notUpdated')
       // eslint-disable-next-line object-curly-newline
-      .map(({ type, ...node }) => {
+      .map((node) => {
+        const { type } = node;
         const pathProperty = [...path, node.name];
         const correctPath = pathProperty.join('.');
         switch (type) {
