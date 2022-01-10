@@ -9,10 +9,8 @@ const stringify = (value) => {
 
 export default (diffTree) => {
   const iter = (tree, path) => {
-    // eslint-disable-next-line object-curly-newline
     const resultLines = tree
       .filter(({ type }) => type !== 'notUpdated')
-      // eslint-disable-next-line object-curly-newline
       .map((node) => {
         const { type } = node;
         const pathProperty = [...path, node.name];
